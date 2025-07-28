@@ -1,23 +1,9 @@
 package vcnmb.hannah.currencyconverter
 
 import android.util.Log
-import android.content.Context
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.github.kittinunf.fuel.core.extensions.jsonBody
-import com.github.kittinunf.fuel.httpDelete
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -28,7 +14,9 @@ class ConverterHandler {
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
 
-    private fun getCountryByName(countryName: String){
+    //method to pull all counties avalible
+
+    private fun getCountryByName(countryName: String, callback: (Country?) -> Unit){
         val url = "https://restcountries.com/v3.1/name/$countryName"
 
         executor.execute{
@@ -41,10 +29,21 @@ class ConverterHandler {
                         is Result.Success ->{
                             try{
                                 val countryJson = result.get()
-                                val countryArray: Array<Country> = Gson().fromJson(countryJson, Array<Country>::class.java)
-                                val country = countryArray.first()
+                                val countryJsonArrays: Array<CountryJson> = Gson().fromJson(countryJson, Array<CountryJson>::class.java)
+                                val countryFromJson = countryJsonArrays.first()
 
-                                getCurrencyFromCountry(country)
+//                                val countryName = countryFromJson.name.common
+//                                val currencyName = countryFromJson.currencies.values.firstOrNull()?.name
+
+                                val name = countryFromJson?.name?.common
+                                val currency = getCurrencyFromCountry(countryFromJson!!)
+
+                                if (name != null && currency != null) {
+                                    val country = Country(name, currency)
+                                    callback(country)
+                                } else {
+                                    callback(null)
+                                }
 
                             } catch (e: JsonSyntaxException){
                                 Log.e("GetCurrencyByCountryName", "JSON parsing error: ${e.message}")
@@ -63,8 +62,8 @@ class ConverterHandler {
     }
 
 
-    private fun getCurrencyFromCountry(country: Country): String?{
-        val currencyName = country.currencies.values.firstOrNull()?.name
+    private fun getCurrencyFromCountry(countryJson: CountryJson): String?{
+        val currencyName = countryJson.currencies.values.firstOrNull()?.name
         return(currencyName)
     }
 }

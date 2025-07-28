@@ -5,7 +5,7 @@ package vcnmb.hannah.currencyconverter
 //    val currencyName : String
 //)
 
-data class Country(
+data class CountryJson(
     val name: Name,
     val tld: List<String>,
     val cca2: String,
@@ -91,5 +91,11 @@ data class CapitalInfo(
 data class PostalCode(
     val format: String,
     val regex: String
+)
+
+
+data class Country(
+    val CountryName: String,
+    val CurrencyName: String
 )
 
