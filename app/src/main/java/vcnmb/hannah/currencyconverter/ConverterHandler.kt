@@ -13,8 +13,55 @@ class ConverterHandler {
 
     private val executor = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
+    private val APIkey = "duzteRjibGK9YxwXRHTeWG8u9dvX7R"
 
-    //method to pull all counties avalible
+    //method to pull all counties available
+    fun getAllCountries(callback: (List<Country>) -> Unit) {
+        val url = "https://restcountries.com/v3.1/all"
+
+        executor.execute {
+            url.httpGet().responseString { _, response, result ->
+                handler.post {
+                    if (response.statusCode != 200) {
+                        callback(emptyList())
+                        return@post
+                    }
+
+                    when (result) {
+                        is Result.Success -> {
+                            try {
+                                val json = result.get()
+                                val countryJsonArray: Array<CountryJson> =
+                                    Gson().fromJson(json, Array<CountryJson>::class.java)
+
+                                val countryList = countryJsonArray.mapNotNull { countryJson ->
+                                    val name = countryJson.name.common
+                                    val currencyName = countryJson.currencies.values.firstOrNull()?.name
+                                    if (name != null && currencyName != null) {
+                                        Country(name, currencyName)
+                                    } else null
+                                }
+
+                                callback(countryList)
+
+                            } catch (e: JsonSyntaxException) {
+                                Log.e("GetAllCountries", "JSON parsing error: ${e.message}")
+                                callback(emptyList())
+                            }
+                        }
+
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.e("GetAllCountries", "API Error: ${ex.message}")
+                            callback(emptyList())
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+// method to get country+Currency by country name
 
     private fun getCountryByName(countryName: String, callback: (Country?) -> Unit){
         val url = "https://restcountries.com/v3.1/name/$countryName"
@@ -61,9 +108,18 @@ class ConverterHandler {
         }
     }
 
-
     private fun getCurrencyFromCountry(countryJson: CountryJson): String?{
-        val currencyName = countryJson.currencies.values.firstOrNull()?.name
+        val currencyName = countryJson.currencies.values.firstOrNull()?.toString()
         return(currencyName)
     }
+
+    //convert currencies
+    //do i need to get the shorted version and not the name
+    private fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Int, callback: (Int?) -> Unit)
+    {
+        val url = "https://www.amdoren.com/api/currency.php?api_key=$APIkey&from=${countryOne.CurrencyName}&to=${countryTwo.CurrencyName}&amount=$amount"
+    }
+
+
+
 }
