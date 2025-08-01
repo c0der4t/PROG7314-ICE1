@@ -61,7 +61,7 @@ class ConverterHandler {
         }
     }
 
-// method to get country+Currency by country name
+// method to get c by country name
 
     fun getCountryByName(countryName: String, callback: (Country?) -> Unit){
         val url = "https://restcountries.com/v3.1/name/$countryName"
@@ -105,13 +105,15 @@ class ConverterHandler {
         }
     }
 
-    private fun getCurrencyFromCountry(countryJson: CountryJson): String?{
-        return countryJson.currencies.keys.firstOrNull()
+    //returns the currency code of the country
+    private fun getCurrencyFromCountry(country: CountryJson): String?{
+        return country.currencies.keys.firstOrNull()
     }
 
 
     //convert currencies
-    //do i need to get the shorted version and not the name
+    //takes in two country objects and returns the converted rate from the first country to the second
+
     fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Int, callback: (Int?) -> Unit) {
         val url = "https://www.amdoren.com/api/currency.php?api_key=$APIkey&from=${countryOne.CurrencyName}&to=${countryTwo.CurrencyName}&amount=$amount"
 
