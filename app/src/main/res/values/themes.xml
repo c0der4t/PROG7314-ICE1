@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CurrencyConverter" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.CurrencyConverter" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorAccent">@android:color/white</item>
+        <item name="colorControlActivated">@color/DnDGold</item>
+    </style>
+
+    <style name="HexButton" parent="Base.Theme.CurrencyConverter">
+        <item name="android:background">@drawable/btn_hex</item>
     </style>
 
     <style name="Theme.CurrencyConverter" parent="Base.Theme.CurrencyConverter" />
