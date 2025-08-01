@@ -114,7 +114,7 @@ class ConverterHandler {
     //convert currencies
     //takes in two country objects and returns the converted rate from the first country to the second
 
-    fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Int, callback: (Int?) -> Unit) {
+    fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Double, callback: (Double?) -> Unit) {
         val url = "https://www.amdoren.com/api/currency.php?api_key=$APIkey&from=${countryOne.CurrencyName}&to=${countryTwo.CurrencyName}&amount=$amount"
 
         executor.execute {
