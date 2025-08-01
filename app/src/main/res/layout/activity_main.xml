@@ -7,13 +7,172 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lblSrcCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Source Country" />
+
+                <!-- Replace spnSourceCountry Spinner -->
+                <AutoCompleteTextView
+                    android:id="@+id/actvSrcCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Country Name"
+                    android:inputType="text"
+                    android:completionThreshold="1" />
+
+                <TextView
+                    android:id="@+id/txtSourceCountryErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Country not found"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    android:paddingTop="8dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnSwap"
+                android:background="@drawable/btn_hex_gold_ripple"
+                android:layout_width="120dp"
+                android:layout_height="30dp"
+                android:padding="0dp"
+                android:text="⇅"
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblSrcCurr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Destination Country" />
+
+            <AutoCompleteTextView
+                android:id="@+id/actvDestCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Country Name"
+                android:inputType="text"
+                android:completionThreshold="1" />
+
+            <TextView
+                android:id="@+id/txtDestCountryMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Country not found"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:paddingTop="8dp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblSrcAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Source Amount"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/edtSourceAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g. 1000.00"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lblDestAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Destination Amount"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/edtDestAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="e.g. 17459.00"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnConvert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Convert"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_hex_gold_ripple"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
