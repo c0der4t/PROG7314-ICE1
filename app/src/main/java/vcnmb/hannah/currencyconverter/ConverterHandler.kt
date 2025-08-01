@@ -133,7 +133,7 @@ class ConverterHandler {
 
                                 if (currencyResponse.error == 0) {
                                     val value = currencyResponse.amount
-                                    callback(value.toInt())
+                                    callback(value.toDouble())
                                 } else {
                                     Log.e("ConvertCurrency", "API error: ${currencyResponse.error_message}")
                                     callback(null)

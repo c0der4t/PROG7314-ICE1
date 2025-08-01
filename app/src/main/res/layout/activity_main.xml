@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@drawable/brokenmap"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -38,30 +37,27 @@
                     android:layout_height="wrap_content"
                     android:text="Source Country" />
 
-                <Spinner
-                    android:id="@+id/spnSourceCountry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/lblSrcCurr"
+                <!-- Replace spnSourceCountry Spinner -->
+                <AutoCompleteTextView
+                    android:id="@+id/actvSrcCountry"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Source Curr" />
+                    android:hint="Country Name"
+                    android:inputType="text"
+                    android:completionThreshold="1" />
 
-                <Spinner
-                    android:id="@+id/spnSourceCurrency"
+                <TextView
+                    android:id="@+id/txtSourceCountryErrorMessage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Country not found"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:visibility="gone"
+                    android:textAlignment="center"
+                    android:paddingTop="8dp" />
             </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -87,47 +83,36 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/lblSrcCurr"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:text="Destination Country" />
 
-                <TextView
-                    android:id="@+id/lblDstCountry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dest Country" />
-
-                <Spinner
-                    android:id="@+id/spnDestCountry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <AutoCompleteTextView
+                android:id="@+id/actvDestCountry"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:hint="Country Name"
+                android:inputType="text"
+                android:completionThreshold="1" />
 
-                <TextView
-                    android:id="@+id/lblDestCurrency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dest Curr" />
-
-                <Spinner
-                    android:id="@+id/spnDestCurrency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/txtDestCountryMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Country not found"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:paddingTop="8dp" />
         </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -169,6 +154,23 @@
                 android:layout_height="wrap_content"
                 android:hint="e.g. 17459.00"
                 android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnConvert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Convert"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_hex_gold_ripple"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp" />
         </LinearLayout>
 
     </LinearLayout>
