@@ -63,7 +63,7 @@ class ConverterHandler {
 
 // method to get country+Currency by country name
 
-    private fun getCountryByName(countryName: String, callback: (Country?) -> Unit){
+    fun getCountryByName(countryName: String, callback: (Country?) -> Unit){
         val url = "https://restcountries.com/v3.1/name/$countryName"
 
         executor.execute{
@@ -78,9 +78,6 @@ class ConverterHandler {
                                 val countryJson = result.get()
                                 val countryJsonArrays: Array<CountryJson> = Gson().fromJson(countryJson, Array<CountryJson>::class.java)
                                 val countryFromJson = countryJsonArrays.first()
-
-//                                val countryName = countryFromJson.name.common
-//                                val currencyName = countryFromJson.currencies.values.firstOrNull()?.name
 
                                 val name = countryFromJson?.name?.common
                                 val currency = getCurrencyFromCountry(countryFromJson!!)
@@ -109,16 +106,52 @@ class ConverterHandler {
     }
 
     private fun getCurrencyFromCountry(countryJson: CountryJson): String?{
-        val currencyName = countryJson.currencies.values.firstOrNull()?.toString()
-        return(currencyName)
+        return countryJson.currencies.keys.firstOrNull()
     }
+
 
     //convert currencies
     //do i need to get the shorted version and not the name
-    private fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Int, callback: (Int?) -> Unit)
-    {
+    fun convertCurrency(countryOne: Country, countryTwo: Country, amount: Int, callback: (Int?) -> Unit) {
         val url = "https://www.amdoren.com/api/currency.php?api_key=$APIkey&from=${countryOne.CurrencyName}&to=${countryTwo.CurrencyName}&amount=$amount"
+
+        executor.execute {
+            url.httpGet().responseString { _, response, result ->
+                handler.post {
+                    if (response.statusCode == 404) {
+                        callback(null)
+                        return@post
+                    }
+
+                    when (result) {
+                        is Result.Success -> {
+                            try {
+                                val currencyJson = result.get()
+                                val currencyResponse: CurrencyJson = Gson().fromJson(currencyJson, CurrencyJson::class.java)
+
+                                if (currencyResponse.error == 0) {
+                                    val value = currencyResponse.amount
+                                    callback(value.toInt())
+                                } else {
+                                    Log.e("ConvertCurrency", "API error: ${currencyResponse.error_message}")
+                                    callback(null)
+                                }
+                            } catch (e: JsonSyntaxException) {
+                                Log.e("ConvertCurrency", "JSON parsing error: ${e.message}")
+                                callback(null)
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.e("ConvertCurrency", "API Error: ${ex.message}")
+                            callback(null)
+                        }
+                    }
+                }
+            }
+        }
     }
+
 
 
 
