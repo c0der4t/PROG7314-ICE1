@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var countries: List<Country>
     private lateinit var countryNames: List<String>
 
+    private lateinit var txtSourceCurrencyCode: TextView
+    private lateinit var txtDestCurrencyCode: TextView
+
+
     private lateinit var txtSourceCountryErrorMessage: TextView
     private lateinit var txtDestCountryErrorMessage: TextView
 
@@ -52,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         txtSourceCountryErrorMessage = findViewById(R.id.txtSourceCountryErrorMessage)
         txtDestCountryErrorMessage = findViewById(R.id.txtDestCountryMessage)
 
+        txtSourceCurrencyCode = findViewById(R.id.txtSrcCurrencyCode)
+        txtDestCurrencyCode = findViewById(R.id.txtDestCurrencyCode)
+
+
         // Fetch countries
         converterHandler.getAllCountries { list ->
             countries = list.sortedBy { it.CountryName }
@@ -71,12 +79,35 @@ class MainActivity : AppCompatActivity() {
             txtSourceCountryErrorMessage.visibility = View.GONE
             txtDestCountryErrorMessage.visibility = View.GONE
 
+            if (fromName.isNotEmpty()) {
+                getCountryByName(fromName) { country ->
+                    if (country != null) {
+                        txtSourceCurrencyCode.text = country.CurrencyName
+                    } else {
+                        txtSourceCurrencyCode.text = "N/A"
+                        txtSourceCountryErrorMessage.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            if (toName.isNotEmpty()) {
+                getCountryByName(toName) { country ->
+                    if (country != null) {
+                        txtDestCurrencyCode.text = country.CurrencyName
+                    } else {
+                        txtDestCurrencyCode.text = "N/A"
+                        txtDestCountryErrorMessage.visibility = View.VISIBLE
+                    }
+                }
+            }
+
             if (fromName.isNotEmpty() && toName.isNotEmpty() && amount != null) {
                 convertBetweenTwoCountries(fromName, toName, amount) { result ->
                     edtDestAmount.setText(result?.toString() ?: "Conversion failed")
                 }
             }
         }
+
 
         // Listeners
         edtSourceAmount.setOnEditorActionListener { _, _, _ ->
@@ -106,6 +137,28 @@ class MainActivity : AppCompatActivity() {
             if (fromName.isNotEmpty() && toName.isNotEmpty() && amount != null) {
                 convertBetweenTwoCountries(fromName, toName, amount) { result ->
                     edtDestAmount.setText(result?.toString() ?: "Conversion failed")
+                }
+            }
+
+            if (fromName.isNotEmpty()) {
+                getCountryByName(fromName) { country ->
+                    if (country != null) {
+                        txtSourceCurrencyCode.text = country.CurrencyName
+                    } else {
+                        txtSourceCurrencyCode.text = "N/A"
+                        txtSourceCountryErrorMessage.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            if (toName.isNotEmpty()) {
+                getCountryByName(toName) { country ->
+                    if (country != null) {
+                        txtDestCurrencyCode.text = country.CurrencyName
+                    } else {
+                        txtDestCurrencyCode.text = "N/A"
+                        txtDestCountryErrorMessage.visibility = View.VISIBLE
+                    }
                 }
             }
         }
