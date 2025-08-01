@@ -2,6 +2,9 @@ package vcnmb.hannah.currencyconverter
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,6 +27,17 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize converterHandler
         converterHandler = ConverterHandler()
+
+
+        var cmbxSrcCountr = findViewById<Spinner>(R.id.spnSourceCountry)
+        val classList = mutableListOf("Far Far Away")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, classList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        cmbxSrcCountr.adapter = adapter
+
+        classList.add("The Swamp")
+        adapter.notifyDataSetChanged()
 
     }
 
@@ -60,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     private fun convertBetweenTwoCountries(fromCountryName: String, toCountryName: String, amountToConvert: Double, callback: (Double?) -> Unit) {
 
         //methods have to be called inside eachother as they are asychenouse
-        
+
         //get first country from name
         getCountryByName(fromCountryName) { countryOne ->
             if (countryOne != null) {
